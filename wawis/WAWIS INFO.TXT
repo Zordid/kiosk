@@ -1,0 +1,15 @@
+Wawis - Das Warenwirtschaftssystem
+----------------------------------
+
+Projekt programmiert für Norkus & Blaaß Franchising GmbH
+
+
+
+Logbuch
+-------
+
+29.7.95 Fehler beim Laden von Ordersätzen führten zum Absturz.
+	Verantwortlich war eine Inkonsitenz in der Datenstruktur des Ordersatzes,
+	von nun an wird beim Lesen des Ordersatzes die Numerierung der Gruppen neu 
+	vorgenommen.
+	Änderungen im Modul Ordersatz.
