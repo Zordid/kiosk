@@ -102,25 +102,40 @@ Implementation
   Var
     Cmd: Word;
     Dlg: PDialog;
+    DateOk: Boolean;
+    TmpDate: TDate;
     Data: Record
       N: String[20];
-      D: PDate;
+      D: String[8];
     End;
   Begin
     Cmd:=cmCancel;
+    If Date=nil Then New(Date, InitToday);
     Dlg:=PDialog(GetRez('OSDlg'));
     If Dlg<>nil Then
     Begin
-      Data.N:=Name.GetStr;
-      Data.D:=Date;
-      Dlg^.SetData(Data);
-      Cmd:=DeskTop^.ExecView(Dlg);
-      If Cmd=cmOk Then
-      Begin
-        Dlg^.GetData(Data);
-        Date:=Data.D;
-        Name.SetStr(Data.N);
-      End;
+      Repeat
+        TmpDate.InitTDate(Date^);
+        Data.N:=Name.GetStr;
+        Data.D:=TmpDate.GetStrDate;
+        Dlg^.SetData(Data);
+        Cmd:=DeskTop^.ExecView(Dlg);
+        If Cmd=cmOk Then
+        Begin
+          Dlg^.GetData(Data);
+          Name.SetStr(Data.N);
+          If Data.D='' Then
+          Begin
+            DateOk:=True;
+            TmpDate.InitToday;
+          End Else
+            DateOk:=TmpDate.SetStrDate(Data.D);
+          If DateOk Then
+            Date^.InitTDate(TmpDate)
+          Else
+            MessageBox('Bitte korrektes Datum angeben !', nil, mfError Or mfOkButton);
+        End;
+      Until (Cmd<>cmOk) Or (DateOk);
       Dispose(Dlg, Done);
     End;
     Edit:=Cmd;

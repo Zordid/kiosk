@@ -7,9 +7,9 @@ Uses
   Ordersatz, OSViews, OSActive, Orders, CurrOrd, StackDmp;
 
 Const
-  Copyright= '(C) 1991/92 by Olaf Gottschalk';
-  Version= '1.2B';
-  LastChange= '8.6.93';
+  Copyright= '(C) 1991-93 by Olaf Gottschalk';
+  Version= '1.2C';
+  LastChange= '25.11.93';
 
 Type
   TKioskApp= Object(TApplication)
