@@ -526,6 +526,9 @@ Implementation
     End;
   End;
 
+  Type
+    PIntInputLine= PNumInputLine;
+
   Procedure TOrderEditor.HandleEvent(Var Event: TEvent);
 
     Procedure EnterOrder(Item: Integer);

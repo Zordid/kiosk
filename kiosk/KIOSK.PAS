@@ -2,21 +2,17 @@
 {$M 16384,65536,655360}
 Program Kiosk;
 Uses
-  Crt, Objects, Drivers, Views, Menus, App, MsgBox, HeapView, Calc, ClkView,
+  Crt, Objects, Drivers, Views, Menus, App, MsgBox, Calc, 
   KioskCmds, KioskRez, Drucker, Stamm, Artikel, Kunden, Lieferanten,
   Ordersatz, OSViews, OSActive, Orders, CurrOrd, StackDmp;
 
 Const
   Copyright= '(C) 1991/92 by Olaf Gottschalk';
-  Version= '1.2';
-  LastChange= '31.5.92';
+  Version= '1.2B';
+  LastChange= '8.6.93';
 
 Type
   TKioskApp= Object(TApplication)
-    ClockView: PClockView;
-{$IFDEF DEBUG}
-    HeapView: PHeapView;
-{$ENDIF}
     Constructor Init;
     Procedure InitMenuBar; virtual;
     Procedure InitStatusLine; virtual;
@@ -33,16 +29,6 @@ Begin
   DeskJet:=(ParamStr(1)='deskjet');
   InitRez;
   TApplication.Init;
-  { Clockviewer }
-  R.Assign(70, 0, 80, 1);
-  ClockView:=New(PClockView, Init(R));
-  Insert(ClockView);
-{$IFDEF DEBUG}
-  { Heapviewer }
-  R.Assign(70, 24, 80, 25);
-  HeapView:=New(PHeapView, Init(R));
-  Insert(HeapView);
-{$ENDIF}
   { Dateien öffnen }
   OpenLieferanten;
   OpenKunden;
@@ -129,11 +115,7 @@ End;
 Procedure TKioskApp.Idle;
 Begin
   TApplication.Idle;
-  ClockView^.UpDate;
-{$IFDEF DEBUG}
-  HeapView^.UpDate;
-{$ENDIF}
-End;
+ End;
 
 Procedure TKioskApp.OutOfMemory;
 Begin

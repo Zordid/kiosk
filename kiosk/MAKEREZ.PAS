@@ -3,6 +3,9 @@ Uses
   Objects, Drivers, Views, Dialogs, Fields, Menus,
   KioskCmds, KioskRez, Stamm, Artikel, Kunden, Lieferanten,
   Ordersatz, OSActive, Orders, CurrOrd;
+
+Type
+  PIntInputLine= PNumInputLine;
   
 Var
   Strm: PBufStream;
@@ -156,28 +159,28 @@ Begin
     Labl := New(PLabel, Init(R, '~A~rtikelnr', Control));
     Insert(Labl);
     R.Assign(7,9,19,10);
-    Control := New(PRealInputLine, Init(R, 10, 2, 0.0, 0.0));
+    Control := New(PRealInputLine, Init(R, 10));
     Insert(Control);
     R.Assign(20,9,30,10);
     Control := New(PInputLine, Init(R, 8));
     Insert(Control);
     R.Assign(31,9,43,10);
-    Control := New(PRealInputLine, Init(R, 10, 2, 0.0, 0.0));
+    Control := New(PRealInputLine, Init(R, 10));
     Insert(Control);
     R.Assign(46,9,58,10);
-    Control := New(PRealInputLine, Init(R, 10, 2, 0.0, 0.0));
+    Control := New(PRealInputLine, Init(R, 10));
     Insert(Control);
     R.Assign(7,10,19,11);
-    Control := New(PRealInputLine, Init(R, 10, 2, 0.0, 0.0));
+    Control := New(PRealInputLine, Init(R, 10));
     Insert(Control);
     R.Assign(20,10,30,11);
     Control := New(PInputLine, Init(R, 8));
     Insert(Control);
     R.Assign(31,10,43,11);
-    Control := New(PRealInputLine, Init(R, 10, 2, 0.0, 0.0));
+    Control := New(PRealInputLine, Init(R, 10));
     Insert(Control);
     R.Assign(46,10,58,11);
-    Control := New(PRealInputLine, Init(R, 10, 2, 0.0, 0.0));
+    Control := New(PRealInputLine, Init(R, 10));
     Insert(Control);
     R.Assign(44,9,45,10);
     Control := New(PStaticText, Init(R, '-'));
@@ -404,7 +407,7 @@ Begin
   R.Assign(3,1,8,2);
   Dlg^.Insert(New(PLabel, Init(R, '~N~ame', Control)));
   R.Assign(27,2,37,3);
-  Control := New(PDateInputLine, Init(R, True));
+  Control := New(PInputLine, Init(R, 8));
   Dlg^.Insert(Control);
   R.Assign(27,1,37,2);
   Dlg^.Insert(New(PLabel, Init(R, '~G~ültig ab', Control)));

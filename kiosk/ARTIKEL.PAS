@@ -90,7 +90,7 @@ Implementation
     FillChar(Key[1], SizeOf(Key)-1, 0);
     StrMove(Key, Art.Name);
     Key[0]:=#30;
-    StrCat(Key, Art.Menge, 40);
+    Key:=Key+Art.Menge;
     StrUprG(Key);
     CreateKey:=Key;
   End;
@@ -171,8 +171,14 @@ Implementation
   End;
 
   Procedure TArtikel.Delete;
+  Var R: TArtikelRec;
   Begin
-    {If DataRef<>-1 Then DeleteRec(ArtikelF, DataRef);}
+    If DataRef<>-1 Then
+    Begin
+      DataFile.GetRec(ArtikelF, DataRef, R);
+      R.Status:=100;
+      PutRec(ArtikelF, DataRef, R);
+    End;
   End;
 
   Constructor TArtikel.Load(Var S: TStream);
@@ -231,7 +237,7 @@ Implementation
   Var
     Strm: TBufStream;
     A: TArtikelRec;
-    I: LongInt;
+    I, J: LongInt;
     NA: PArtikel;
     F: TDataFile;
   Begin
@@ -244,10 +250,44 @@ Implementation
       New(Artikelstamm, Init);
     End Else
     Begin
+      If ParamStr(1)='/A' Then
+      Begin
+        CreateFile(F, 'NEWART.DAT', SizeOf(TArtikelRec));
+        For I:=1 To FileLen(ArtikelF) Do
+        Begin
+          GetRec(ArtikelF, I, A);
+          If (A.Status<>0) Or (A.Name='') Then
+          Begin
+            FillChar(A, SizeOf(A), 0);
+            A.Status:=100;
+          End;
+          AddRec(F, J, A);
+          If I<>J Then
+          Begin
+            I:=FileLen(ArtikelF);
+            Ok:=False;
+          End;
+        End;
+        If OK Then
+        Begin
+          CloseFile(ArtikelF);
+          CloseFile(F);
+          FileDelete('ARTIKEL.DAT');
+          FileRename('NEWART.DAT', 'ARTIKEL.DAT');
+          OpenFile(ArtikelF, 'ARTIKEL.DAT', SizeOf(TArtikelRec));
+        End Else
+        Begin
+          ClrScr;
+          Writeln('Fehler beim Komprimieren des Artikelstammes.');
+          Halt(1);
+        End;
+        Artikelstamm^.Changed:=True;
+      End;
       Strm.Init('ARTIKEL.IDX', stOpen, 1024);
       Artikelstamm:=PArtikelstamm(Strm.Get);
       If (Artikelstamm=nil) Or (Strm.Status<>stOK) Then
       Begin
+        If ArtikelStamm<>nil Then Dispose(ArtikelStamm, Done);
         MessageBox('Artikelindex muß neu angelegt werden !', nil, mfError+mfOKButton);
         New(Artikelstamm, Init);
         For I:=1 To FileLen(ArtikelF) Do
@@ -264,30 +304,6 @@ Implementation
         End;
       End;
       Strm.Done;
-    End;
-    If ParamStr(1)='/A' Then
-    Begin
-      CreateFile(F, 'NEWART.DAT', SizeOf(TArtikelRec));
-      For I:=0 To ArtikelStamm^.Count-1 Do
-      Begin
-        NA:=PArtikel(ArtikelStamm^.At(I));
-        GetRec(ArtikelF, NA^.DataRef, A);
-        AddRec(F, NA^.DataRef, A);
-      End;
-      If OK Then
-      Begin
-        CloseFile(ArtikelF);
-        CloseFile(F);
-        FileDelete('ARTIKEL.DAT');
-        FileRename('NEWART.DAT', 'ARTIKEL.DAT');
-        OpenFile(ArtikelF, 'ARTIKEL.DAT', SizeOf(TArtikelRec));
-      End Else
-      Begin
-        ClrScr;
-        Writeln('Fehler beim Komprimieren des Artikelstammes.');
-        Halt(1);
-      End;
-      Artikelstamm^.Changed:=True;
     End;
   End;
 
