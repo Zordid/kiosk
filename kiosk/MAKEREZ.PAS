@@ -2,7 +2,7 @@ Program MakeRez;
 Uses
   Objects, Drivers, Views, Dialogs, Fields, Menus,
   KioskCmds, KioskRez, Stamm, Artikel, Kunden, Lieferanten,
-  Ordersatz, OSActive, Orders, CurrOrd, StreamEr;
+  Ordersatz, OSActive, Orders, CurrOrd;
   
 Var
   Strm: PBufStream;
@@ -395,18 +395,18 @@ End;
 Procedure CreateOSDialog;
 Var Dlg: PDialog;
 Begin
-  R.Assign(20,6,60,14);
+  R.Assign(20,4,60,14);
   New(Dlg, Init(R, 'Ordersatz'));
   Dlg^.HelpCtx:=hcItem;
-  R.Assign(3,3,25,4);
+  R.Assign(3,2,25,3);
   Control := New(PKeyInputLine, Init(R, 20));
   Dlg^.Insert(Control);
-  R.Assign(3,2,8,3);
+  R.Assign(3,1,8,2);
   Dlg^.Insert(New(PLabel, Init(R, '~N~ame', Control)));
-  R.Assign(27,3,37,4);
+  R.Assign(27,2,37,3);
   Control := New(PDateInputLine, Init(R, True));
   Dlg^.Insert(Control);
-  R.Assign(27,2,37,3);
+  R.Assign(27,1,37,2);
   Dlg^.Insert(New(PLabel, Init(R, '~G~ültig ab', Control)));
   R.Assign(7,5,18,7);
   Control := New(PButton, Init(R, 'OK', cmOK, bfDefault));

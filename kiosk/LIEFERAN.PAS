@@ -294,7 +294,11 @@ Implementation
 {== Prozeduren/Funktionen =================================================}
 
   Procedure OpenLieferanten;
-  Var Strm: TBufStream;
+  Var
+    Strm: TBufStream;
+    L: TLieferantenRec;
+    NL: PLieferant;
+    I: LongInt;
   Begin
     OpenFile(LieferF, 'LIEFER.DAT', SizeOf(TLieferantenRec));
     If Not OK Then
@@ -310,10 +314,20 @@ Implementation
       If (Lieferantenstamm=nil) Or (Strm.Status<>stOK) Then
       Begin
         MessageBox('Lieferantenindex muß neu angelegt werden !', nil, mfError+mfOKButton);
-        Halt(1);
+        New(Lieferantenstamm, Init);
+        For I:=1 To FileLen(LieferF) Do
+        Begin
+          GetRec(LieferF, I, L);
+          If L.Status=0 Then
+          Begin
+            NL:=New(PLieferant, Init);
+            NL^.Key.SetStr(L.Name);
+            NL^.DataRef:=I;
+            Lieferantenstamm^.Insert(NL);
+          End;
+        End;
       End;
       Strm.Done;
-      Lieferantenstamm^.Changed:=False;
     End;
   End;
 

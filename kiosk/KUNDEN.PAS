@@ -181,7 +181,11 @@ Implementation
 {== Prozeduren/Funktionen =================================================}
 
   Procedure OpenKunden;
-  Var Strm: TBufStream;
+  Var
+    Strm: TBufStream;
+    K: TKundenRec;
+    NK: PKunde;
+    I: LongInt;
   Begin
     OpenFile(KundenF, 'KUNDEN.DAT', SizeOf(TKundenRec));
     If Not OK Then
@@ -197,10 +201,20 @@ Implementation
       If (Kundenstamm=nil) Or (Strm.Status<>stOK) Then
       Begin
         MessageBox('Kundenindex muß neu angelegt werden !', nil, mfError+mfOKButton);
-        Halt(1);
+        New(Kundenstamm, Init);
+        For I:=1 To FileLen(KundenF) Do
+        Begin
+          GetRec(KundenF, I, K);
+          If K.Status=0 Then
+          Begin
+            NK:=New(PKunde, Init);
+            NK^.Key.SetStr(CreateKey(K));
+            NK^.DataRef:=I;
+            Kundenstamm^.Insert(NK);
+          End;
+        End;
       End;
       Strm.Done;
-      Kundenstamm^.Changed:=False;
     End;
   End;
 

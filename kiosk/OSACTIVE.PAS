@@ -1,4 +1,5 @@
 {$I KIOSKCO.PAS}
+{$O+,F+}
 Unit OSActive;
 Interface
   Uses

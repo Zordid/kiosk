@@ -21,6 +21,7 @@ Interface
   Var
     DruckOptionen: Array[0..1] Of TDruckOptionen;
     LPP, CPL: Word;
+    Deskjet: Boolean;
 
   Procedure LoadDruckOpt;
   Procedure SaveDruckOpt;
@@ -90,27 +91,30 @@ Implementation
         nil, mfInformation+mfOkButton+mfCancelButton)=cmOk Then
       With DruckOptionen[N] Do
       Begin
-        Write(Lst, #27'@');
-        For I:=1 To Upper Do Writeln(Lst);
-        Write(Lst, #27'c'+Chr(Upper));
-        Write(Lst, #27'l'+Chr(Left));
-        If Pitch=0 Then
+        If Not DeskJet Then
         Begin
-          If ParamStr(1)='epson' Then
-            Write(Lst, #27'P')
-          Else
-            Write(Lst, #27'x'#1);
-          CPL:=80-Left;
-        End Else
-        Begin
-          If ParamStr(1)='epson' Then
-            Write(Lst, #27'M')
-          Else
-            Write(Lst, #27'x'#0);
-          CPL:=96-Left;
+          Write(Lst, #27'@');
+          For I:=1 To Upper Do Writeln(Lst);
+          Write(Lst, #27'c'+Chr(Upper));
+          Write(Lst, #27'l'+Chr(Left));
+          If Pitch=0 Then
+          Begin
+            If ParamStr(1)='epson' Then
+              Write(Lst, #27'P')
+            Else
+              Write(Lst, #27'x'#1);
+            CPL:=80-Left;
+          End Else
+          Begin
+            If ParamStr(1)='epson' Then
+              Write(Lst, #27'M')
+            Else
+              Write(Lst, #27'x'#0);
+            CPL:=96-Left;
+          End;
+          If Draft=1 Then Write(Lst, #27'x'#0) Else Write(Lst, #27'x'#1);
+          ResetLineFeed(N);
         End;
-        If Draft=1 Then Write(Lst, #27'x'#0) Else Write(Lst, #27'x'#1);
-        ResetLineFeed(N);
         InitPrinter:=True;
       End Else InitPrinter:=False;
       LPP:=DruckOptionen[N].LPP;
@@ -123,11 +127,12 @@ Implementation
 
   Procedure SetSingleLineFeed;
   Begin
-    Write(Lst, #27'A'#12);
+    If Not DeskJet Then Write(Lst, #27'A'#12);
   End;
 
   Procedure ResetLineFeed(N: Integer);
   Begin
+    If Not DeskJet Then
     Case DruckOptionen[N].LineFeed Of
       0: Write(Lst, #27'A'#12);
       1: Write(Lst, #27'A'#18);

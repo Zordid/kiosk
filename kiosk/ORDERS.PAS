@@ -1,4 +1,5 @@
 {$I KIOSKCO.PAS}
+{$O+,F+}
 Unit Orders;
 Interface
   Uses
@@ -102,7 +103,8 @@ Interface
   Procedure PrintOrder(O: POrder);
 
 Implementation
-  Uses CurrOrd;
+  Uses
+    CurrOrd;
 
 {== TSpezPos ===============================================================}
 
@@ -582,6 +584,14 @@ Implementation
         End;
         Dispose(Dlg, Done);
       End Else
+      Begin
+        Sound(1000);
+        Delay(50);
+        Sound(500);
+        Delay(100);
+        Sound(1000);
+        Delay(50);
+        NoSound;
         If MessageBox('Kundenspezifisch belegen ?',
           nil, mfConfirmation+mfYesNoCancel)=cmYes Then
         Begin
@@ -589,6 +599,7 @@ Implementation
           Event.Command:=cmInsSpez;
           PutEvent(Event);
         End;
+      End;
     End;
 
     Procedure InsertSpez(Item: Integer);
@@ -786,7 +797,7 @@ Implementation
       Ln:=0;
       If FirstThat(@FindLiefer)<>nil Then
       Begin
-        Write(Lst, ThickOn);
+        If Not DeskJet Then Write(Lst, ThickOn);
         If Sum Then
         Begin
           Writeln(Lst, 'Zusammenfassung vom ', Date.GetStrDate,
@@ -810,13 +821,13 @@ Implementation
           Writeln(Lst);
           Inc(Ln, 10);
         End;
-        Write(Lst, ThickOff);
+        If Not Deskjet Then Write(Lst, ThickOff);
         Art:=0;
         Pg:=1;
         Repeat
           If Pg>1 Then
           Begin
-            Write(Lst, ThickOn);
+            If Not DeskJet Then Write(Lst, ThickOn);
             Writeln(Lst, '  Seite ', Pg);
             If Not Sum Then
             Begin
@@ -826,7 +837,7 @@ Implementation
             End;
             Writeln(Lst);
             Inc(Ln);
-            Write(Lst, ThickOff);
+            If Not DeskJet Then Write(Lst, ThickOff);
           End;
           Write(Lst, '  ARTIKEL                      GE INH        ARTIKELNR.  MENGE');
           If Not Sum Then Write(Lst, ' ÄNDERUNG');
@@ -841,14 +852,20 @@ Implementation
               GetArtikelRec(Item^.Artikel, A);
               FormatStr(F, '%-30s %-10s %12s  ', ParRec);
               Write(Lst, F);
-              Write(Lst, ThickOn, Item^.Quantity:5, ThickOff);
+              If DeskJet Then
+                Write(Lst, Item^.Quantity:5)
+              Else
+                Write(Lst, ThickOn, Item^.Quantity:5, ThickOff);
               If Not Sum Then Write(Lst, '   I_____I');
               Writeln(Lst);
               Inc(Ln);
               If Item^.Remark.P<>nil Then
               Begin
                 Inc(Ln);
-                Writeln(Lst, ThickOn, '     ', Item^.Remark.GetStr, ThickOff);
+                If DeskJet Then
+                  Writeln(Lst, '     ', Item^.Remark.GetStr)
+                Else
+                  Writeln(Lst, ThickOn, '     ', Item^.Remark.GetStr, ThickOff);
               End;
             End;
             Inc(Art);

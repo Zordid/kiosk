@@ -2,10 +2,14 @@
 {$M 16384,65536,655360}
 Program Kiosk;
 Uses
-  Crt,
-  Objects, Drivers, Views, Menus, App, MsgBox, HeapView, Calc, ClkView,
+  Crt, Objects, Drivers, Views, Menus, App, MsgBox, HeapView, Calc, ClkView,
   KioskCmds, KioskRez, Drucker, Stamm, Artikel, Kunden, Lieferanten,
   Ordersatz, OSViews, OSActive, Orders, CurrOrd, StackDmp;
+
+Const
+  Copyright= '(C) 1991/92 by Olaf Gottschalk';
+  Version= '1.2';
+  LastChange= '31.5.92';
 
 Type
   TKioskApp= Object(TApplication)
@@ -26,6 +30,7 @@ Type
 Constructor TKioskApp.Init;
 Var R: TRect;
 Begin
+  DeskJet:=(ParamStr(1)='deskjet');
   InitRez;
   TApplication.Init;
   { Clockviewer }
@@ -66,8 +71,10 @@ Var
   D: LongInt;
   E: TEvent;
 Begin
-  MessageBox('Kioskverwaltung für Norkus & Blaaß'#13#13+
-     '    (C) 1991 by Olaf Gottschalk', nil, mfInformation+mfOKButton);
+  MessageBox(
+     ^C'Kioskverwaltung für Norkus & Blaaß'#13+
+     ^C'Version '+Version+' ('+LastChange+')'#13+
+     ^C+Copyright, nil, mfInformation+mfOKButton);
   If TestMem And (MemAvail<30*1024) Then
   Begin
     D:=MemAvail Div 1024;
@@ -106,11 +113,6 @@ Begin
     End;
     ClearEvent(Event);
   End;
-  If (Event.What=evBroadcast) And (Event.Command=cmDeskTopInsert) Then
-  Begin
-    DeskTop^.Insert(PView(Event.InfoPtr));
-    ClearEvent(Event);
-  End;
 End;
 
 Destructor TKioskApp.Done;
@@ -135,7 +137,10 @@ End;
 
 Procedure TKioskApp.OutOfMemory;
 Begin
-  MessageBox('Achtung - Zu wenig freier Speicher !', nil, mfWarning+mfOkButton);
+  MessageBox(
+    ^C'Achtung - Zu wenig freier Speicher!'#13+
+    'Es wird empfohlen, die Arbeit JETZT zu beenden, um Datenverlust '+
+    'zu verhindern!', nil, mfWarning+mfOkButton);
 End;
 
 Var

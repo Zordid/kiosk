@@ -54,7 +54,6 @@ Interface
     cmLookforOrder     = 10008;
     cmLookforActiveOS  = 10009;
     cmLookforCurrList  = 10010;
-    cmDeskTopInsert    = 10011;
     cmLookforOrderFile = 10012;
     cmLookforOrderFileE= 10013;
 

@@ -1,4 +1,5 @@
 {$I KIOSKCO.PAS}
+{$O+,F+}
 Unit Ordersatz;
 Interface
   Uses
@@ -204,9 +205,16 @@ Implementation
       If MessageBox('Die Warengruppen drucken ?', nil, mfConfirmation+mfYesNoCancel)=cmYes Then
       Begin
         If Not InitPrinter(0) Then Exit;
-        Writeln(Lst, WideOn+ThickOn, ' Warengruppenliste', ThickOff);
-        Writeln(Lst, '-------------------', WideOff);
-        Write(Lst, #27'D'#35#47#0);
+        If DeskJet Then
+        Begin
+          Writeln(Lst, ' W a r e n g r u p p e n l i s t e');
+          Writeln(Lst, '-----------------------------------');
+        End Else
+        Begin
+          Writeln(Lst, WideOn+ThickOn, ' Warengruppenliste', ThickOff);
+          Writeln(Lst, '-------------------', WideOff);
+          Write(Lst, #27'D'#35#47#0);
+        End;
         For I:=0 To Count-1 Do With PGruppe(At(I))^ Do
         Begin
           Write(Lst, I+1:2, ' ', Name.GetStr, #9);

@@ -1,4 +1,5 @@
 {$I KIOSKCO.PAS}
+{$O+,F+}
 Unit OSViews;
 Interface
   Uses
@@ -628,19 +629,20 @@ Implementation
       If DeskTop^.ExecView(Dlg)<>cmCancel Then
       Begin
         Dlg^.GetFileName(F);
-        OS^.FName:=NewStr(F);
-      End;
+        If Message(Desktop, evBroadcast, cmLookforOS, @F)<>nil Then
+        Begin
+          MessageBox('Der Ordersatz '+FileName(F)+' wird gerade editiert. Er darf nicht überschrieben werden!',
+            nil, mfInformation+mfOkButton);
+          F:='';
+        End;
+        If FileExists(F) And (MessageBox('Ordersatz '+FileName(F)+
+          ' überschreiben?', nil, mfConfirmation+mfYesNoCancel)<>cmYes) Then F:='';
+      End Else F:='';
       Dispose(Dlg, Done);
-      If Message(Desktop, evBroadcast, cmLookforOS, OS^.FName)<>nil Then
-      Begin
-        MessageBox('Der Ordersatz '+FileName(OS^.FName^)+' wird gerade editiert. Er darf nicht überschrieben werden!',
-          nil, mfInformation+mfOkButton);
-        DisposeStr(OS^.FName);
-        OS^.FName:=nil;
-      End;
-      If (OS^.FName=nil) Or
-        ((FileExists(OS^.FName^)) And (MessageBox('Ordersatz '+FileName(OS^.FName^)+
-        ' überschreiben?', nil, mfConfirmation+mfYesNoCancel)<>cmYes)) Then Exit;
+      If F<>'' Then
+        OS^.FName:=NewStr(F)
+      Else
+        Exit;
     End;
     Strm.Init(OS^.FName^, stCreate, 1024);
     Strm.Put(OS);

@@ -230,7 +230,8 @@ Implementation
         R.F:=0;
         Dlg^.SetData(R);
         Dlg^.Viewer:=PCurrentOrderViewer(Dlg^.Current);
-        Dlg^.Viewer^.FocusItem(Count);
+        If Count>0 Then
+          Dlg^.Viewer^.FocusItem(Count-1);
         Dlg^.List:=@Self;
         DeskTop^.Insert(Dlg);
       End;
