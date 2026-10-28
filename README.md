@@ -208,6 +208,13 @@ came back: Kiosk says `Ordersatz konnte nicht geladen werden !`, and WAWIS
 shouts `!! Artikel gelöscht !!`. I would never in the world do that again.
 How horrible.
 
+The real shock was in `ARTIKEL.PAS`: the purchase and sales prices are
+`Real`, floating point numbers. In WAWIS they are even `Single`, with only
+about seven significant digits. Money in floating point! I obviously knew
+nothing about that problem back then. Luckily it never mattered: Kiosk
+never stored a price, and WAWIS never calculated with one (see the review
+below).
+
 My message to the eighteen-year-old in Barsinghausen: nice job again, all
 good the way you did it. And when Windows and Borland Pascal get
 cumbersome: wait a few months! Delphi is going to come and help you!
@@ -268,6 +275,21 @@ Requested changes:
   the year after 1999 is 00. The year list of the orders window, however,
   ends in 1999, and in January 2000 it would have selected an entry that
   does not exist.
+- **Money in floating point.** Kiosk keeps purchase and sales prices as
+  `Real` (6 bytes, 11 to 12 digits), WAWIS its prices as `Single` (4 bytes,
+  about 7 digits). Most prices cannot be stored exactly: of 570 prices in
+  WAWIS's purchase list only 64 are; 2.29 DM is in the file as
+  2.28999996185302734375. Nothing went wrong, by luck, not by design: in
+  Kiosk 1.2B and 1.2C the price input line is a stub that stores zeros
+  (all 795 articles of the test data cost 0.00), and WAWIS only stores and
+  shows its prices, rounded with `Str(Preis:0:2)`, and never calculates
+  with them. Had it done so, with these prices: `Trunc(Preis * 100)` gives
+  the wrong number of pfennigs for 31 of them (16.88 becomes 1687), adding
+  ten of each article in `Single` is 0.93 DM off, adding 15 % VAT and
+  rounding comes out wrong for 30 of them, and above about 65,000 DM a
+  total can no longer hold the pfennigs (65,535.99 is stored as
+  65,535.98828125). The fix was available then: whole pfennigs in a
+  `LongInt`, or Turbo Pascal's `Comp`; Delphi later added `Currency`.
 - **Fixed-size buffers.** Paths go into `array[0..200] of Char` with
   `StrCopy` and `StrCat`, unchecked. That was the Windows 3.1 way, but it
   is one long path away from overwriting memory.
