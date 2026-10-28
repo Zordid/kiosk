@@ -59,7 +59,10 @@
         quantity (<kbd>Tab</kbd> for a remark), <kbd>Enter</kbd>, and the
         next number; <kbd>F2</kbd> saves the order</li>
       <li><kbd>F8</kbd> current orders: <kbd>Enter</kbd> shows one,
-        <kbd>Alt</kbd>+<kbd>D</kbd> prints it (there is no printer here)</li>
+        <kbd>Alt</kbd>+<kbd>D</kbd> prints it (there is no printer here);
+        <kbd>Space</kbd> marks orders, and <kbd>Alt</kbd>+<kbd>Z</kbd>
+        (<em>Zusammenfassen</em>) adds up the marked ones into one order for
+        the wholesaler</li>
       <li><kbd>Alt</kbd>+<kbd>S</kbd> master data: <kbd>A</kbd> articles,
         <kbd>K</kbd> customers, <kbd>L</kbd> wholesalers; type to search,
         <kbd>Ins</kbd> adds an entry</li>
@@ -74,9 +77,10 @@
     <p class="hint">Click into the screen to type. On a Mac, the function
       keys may need <kbd>fn</kbd>. The DOS clock is set to 26 November 1993,
       the day after 1.2C was finished. The articles are those of 1993; the
-      two customers, "Puffreis, Pit" with his order of 1992 and
-      "Salmiak, Susi", are made up (the kiosks' real owners are not shown),
-      and so are all phone numbers. Whatever you change stays in your browser
+      two customers, "Puffreis, Pit" and "Salmiak, Susi", are made up (the
+      kiosks' real owners are not shown), and so are all phone numbers.
+      There are three orders: his of 1992, and one from each of them on the
+      day, with articles in common to add up. Whatever you change stays in your browser
       only. How the order editor came about is told in the
       <a href="https://github.com/Zordid/kiosk#the-story">story</a>.</p>
   </div>
@@ -92,7 +96,7 @@
 <script>
   // The ?xxxxxxxx after the bundle is the start of its SHA-256, so browsers
   // fetch a changed bundle instead of a cached one (tools/make-bundle.py).
-  const bundle = 'play/kiosk12c.jsdos?b819919e';
+  const bundle = 'play/kiosk12c.jsdos?9c060126';
   if (new URLSearchParams(location.search).has('play')) {
     // while DOS has the keyboard, keep arrow keys etc. from scrolling the page
     const dos = document.getElementById('dos');

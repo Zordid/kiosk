@@ -483,8 +483,9 @@ of an empty collection.
 The easiest way to try Kiosk is the [browser demo](https://zordid.github.io/kiosk/)
 (`docs/index.html`, served by GitHub Pages from the `docs` folder): Kiosk
 1.2C in [js-dos](https://js-dos.com), with the 1993 articles, two made-up
-customers ("Puffreis, Pit" with his order of 1992, and "Salmiak, Susi"),
-entered with Kiosk itself, and the DOS clock on 26 November 1993. The bundle in `docs/play` was made with
+customers ("Puffreis, Pit" and "Salmiak, Susi") and three orders, so that
+*Zusammenfassen* can add up orders, all entered with Kiosk itself, and the
+DOS clock on 26 November 1993. The bundle in `docs/play` was made with
 `tools/make-demo.sh`. WAWIS has no browser demo: it needs Windows, which
 cannot be shipped here.
 
