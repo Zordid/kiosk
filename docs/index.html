@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiosk – try it in your browser</title>
+<meta name="description" content="Kiosk, order management for the Quickbox kiosk chain by Olaf Gottschalk, 1991–1993. Kiosk 1.2C running in your browser.">
+<meta property="og:title" content="Kiosk – try it in your browser">
+<meta property="og:description" content="Order management for the Quickbox kiosks, 1991–1993: a Turbo Vision program for MS-DOS, running in DOSBox, in your browser.">
+<meta property="og:url" content="https://zordid.github.io/kiosk/">
+<meta property="og:image" content="https://zordid.github.io/kiosk/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="play/js-dos/js-dos.css">
+<style>
+  :root { --blue: #0000aa; --cyan: #00aaaa; --gray: #aaaaaa; --white: #ffffff; --yellow: #ffff55; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--blue); color: var(--white);
+    font: 16px/1.5 "IBM Plex Mono", Menlo, Consolas, "Courier New", monospace;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 2rem; letter-spacing: .3em; color: var(--yellow); }
+  .sub { margin: 4px 0 24px; color: var(--gray); }
+  .card { background: var(--gray); color: #000; padding: 16px 20px; box-shadow: 8px 8px 0 #000; }
+  .card h2 { margin: 0 0 4px; font-size: 1.1rem; }
+  .card p { margin: 0 0 12px; }
+  .card ul { margin: 0 0 16px; padding-left: 20px; font-size: .9rem; }
+  .card a.start {
+    display: inline-block; background: #00aa00; color: var(--white); padding: 4px 18px;
+    text-decoration: none; box-shadow: 4px 4px 0 #000;
+  }
+  .card a.start:hover, .card a.start:focus { background: #55ff55; color: #000; }
+  kbd { background: #000; color: var(--white); padding: 0 4px; font-family: inherit; }
+  #screen { margin-top: 28px; }
+  #dos { width: 100%; aspect-ratio: 8 / 5; background: #000; }
+  .hint { color: var(--gray); font-size: .9rem; }
+  footer { margin-top: 32px; font-size: .85rem; color: var(--gray); }
+  footer a, .sub a, .hint a { color: var(--cyan); }
+</style>
+</head>
+<body>
+<main>
+  <h1>KIOSK</h1>
+  <p class="sub">Order management for the Quickbox kiosks by Olaf Gottschalk,
+    1991–1993. Running here in DOSBox, in your browser.
+    The full story, and its Windows successor WAWIS, are in the
+    <a href="https://github.com/Zordid/kiosk">repository</a>.</p>
+
+  <section class="card">
+    <h2>Kiosk 1.2C (November 1993)</h2>
+    <p>Turbo Pascal 6.0 with Turbo Vision, German, built in 2026 from the
+      original source with reconstructed units. You are at the headquarters
+      in Barsinghausen, and a kiosk phones in its order.</p>
+    <ul>
+      <li><kbd>Enter</kbd> closes the about box, <kbd>Esc</kbd> the list of
+        current orders</li>
+      <li><kbd>F4</kbd> takes an order: <kbd>Enter</kbd> picks the customer,
+        then type the line number on the order form, <kbd>Enter</kbd>, the
+        quantity (<kbd>Tab</kbd> for a remark), <kbd>Enter</kbd>, and the
+        next number; <kbd>F2</kbd> saves the order</li>
+      <li><kbd>F8</kbd> current orders: <kbd>Enter</kbd> shows one,
+        <kbd>Alt</kbd>+<kbd>D</kbd> prints it (there is no printer here)</li>
+      <li><kbd>Alt</kbd>+<kbd>S</kbd> master data: <kbd>A</kbd> articles,
+        <kbd>K</kbd> customers, <kbd>L</kbd> wholesalers; type to search,
+        <kbd>Ins</kbd> adds an entry</li>
+      <li>Menus with <kbd>Alt</kbd>+the red letter, or the mouse;
+        <kbd>Alt</kbd>+<kbd>X</kbd> ends, <kbd>KIOSK</kbd> restarts</li>
+    </ul>
+    <a class="start" href="?play#screen">Start Kiosk 1.2C</a>
+  </section>
+
+  <div id="screen">
+    <div id="dos"></div>
+    <p class="hint">Click into the screen to type. On a Mac, the function
+      keys may need <kbd>fn</kbd>. The DOS clock is set to 26 November 1993,
+      the day after 1.2C was finished. The articles are those of 1993; the
+      two customers, "Puffreis, Pit" with his order of 1992 and
+      "Salmiak, Susi", are made up (the kiosks' real owners are not shown),
+      and so are all phone numbers. Whatever you change stays in your browser
+      only. How the order editor came about is told in the
+      <a href="https://github.com/Zordid/kiosk#the-story">story</a>.</p>
+  </div>
+
+  <footer>
+    Kiosk © 1991–1993 Olaf Gottschalk, MIT license.
+    Emulation by <a href="https://js-dos.com">js-dos</a> 8.5.3 (GPL-2.0,
+    <a href="play/js-dos/NOTICE.md">notice and source</a>).
+  </footer>
+</main>
+
+<script src="play/js-dos/js-dos.js"></script>
+<script>
+  // The ?xxxxxxxx after the bundle is the start of its SHA-256, so browsers
+  // fetch a changed bundle instead of a cached one (tools/make-bundle.py).
+  const bundle = 'play/kiosk12c.jsdos?b819919e';
+  if (new URLSearchParams(location.search).has('play')) {
+    // while DOS has the keyboard, keep arrow keys etc. from scrolling the page
+    const dos = document.getElementById('dos');
+    let inDos = false;
+    document.addEventListener('mousedown', e => { inDos = dos.contains(e.target); });
+    window.addEventListener('keydown', e => {
+      if (inDos && [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+                    'PageUp', 'PageDown', 'Home', 'End', 'Tab'].includes(e.key)) {
+        e.preventDefault();
+      }
+    });
+    Dos(dos, {
+      url: bundle,
+      pathPrefix: 'play/js-dos/emulators/',
+      backend: 'dosbox',
+      autoStart: true,
+      noCloud: true,
+    });
+  }
+</script>
+</body>
+</html>

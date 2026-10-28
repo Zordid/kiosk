@@ -1,0 +1,27 @@
+# Keep files exactly as committed: the DOS and Windows sources use CRLF
+# line endings.
+* -text
+
+*.PAS linguist-language=Pascal
+*.INC linguist-language=Pascal
+
+# data files, resources, sounds and pictures of 1992-1995
+*.DAT binary
+*.IDX binary
+*.ACT binary
+*.ORD binary
+*.WD binary
+*.WB binary
+*.OS binary
+*.OSA binary
+*.OSL binary
+*.OSX binary
+*.RES binary
+*.RWS binary
+*.DLL binary
+*.WAV binary
+*.BMP binary
+*.mp4 binary
+*.jsdos binary
+*.wasm binary
+*.woff binary
