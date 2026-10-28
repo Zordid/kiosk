@@ -28,6 +28,8 @@ story behind them, and what it takes to build and run them today.
 **[Try Kiosk in your browser](https://zordid.github.io/kiosk/)** – Kiosk
 1.2C in DOSBox, ready to take an order.
 
+[![Archived at Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/Zordid/kiosk/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/Zordid/kiosk)
+
 How it all works inside, and what was reconstructed for building and
 running it again, is in [docs/INTERNALS.md](docs/INTERNALS.md).
 
