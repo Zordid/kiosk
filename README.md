@@ -566,6 +566,12 @@ driven from outside by the small agent in `tools/win16`. The details are in
   reconstructed units, WAWIS through a rebuild with the original compiler.
 - **Written in 2026:** `lib/` (the reconstructed Kiosk units and the
   Btrieve requester for WAWIS), `tools/` and `docs/`.
+- **Preserved:** this repository is archived at
+  [Software Heritage](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/Zordid/kiosk).
+  The code as first published in October 2026 has the permanent
+  identifier `swh:1:dir:0ba0488f643073addf4609566477e1db4989c380`; the
+  [release](https://github.com/Zordid/kiosk/releases/tag/museum-2026)
+  has Kiosk 1.2C for DOS and WAWIS 1.1 for Windows as downloads.
 
 ## License
 
